@@ -82,7 +82,7 @@ These must be solved BEFORE implementation, not papered over:
 
 - **Rule Zero**: Write Rust like functional TypeScript. `Rc<RefCell<T>>`, `.clone()`, `.borrow()` - the Rust tax we accept. No lifetime annotations fighting the borrow checker.
 - **Zero prod deps**: No production dependencies. Only `criterion` for benchmarks.
-- **Edition**: Rust 2021 (fix the 2024 in Cargo.toml)
+- **Edition**: Rust 2024
 - **MSRV**: Rust 1.85+
 
 ## Key Decisions
