@@ -1,1 +1,0 @@
-window.SIDEBAR_ITEMS = {"fn":["batch","derived","effect","peek","signal","untrack"],"struct":["Derived","Effect","Signal"]};
