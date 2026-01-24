@@ -1,0 +1,27 @@
+[package]
+name = "spark-signals"
+version = "0.1.0"
+edition = "2024"
+rust-version = "1.85"
+license = "MIT"
+description = "A standalone reactive signals library for Rust - fine-grained reactivity for any application"
+repository = "https://github.com/RLabs-Inc/spark-signals"
+keywords = ["reactive", "signals", "state-management", "fine-grained"]
+categories = ["data-structures", "rust-patterns"]
+
+# This is a standalone crate, not part of a workspace
+[workspace]
+
+[features]
+default = []
+# Thread-safe signals using Arc<RwLock<T>> instead of Rc<RefCell<T>>
+sync = []
+
+[dependencies]
+
+[dev-dependencies]
+criterion = { version = "0.5", features = ["html_reports"] }
+
+[[bench]]
+name = "signals"
+harness = false

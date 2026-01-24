@@ -1,0 +1,44 @@
+<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Spark Signals"><title>spark_signals - Rust</title><script>if(window.location.protocol!=="file:")document.head.insertAdjacentHTML("beforeend","SourceSerif4-Regular-6b053e98.ttf.woff2,FiraSans-Italic-81dc35de.woff2,FiraSans-Regular-0fe48ade.woff2,FiraSans-MediumItalic-ccf7e434.woff2,FiraSans-Medium-e1aa3f0a.woff2,SourceCodePro-Regular-8badfe75.ttf.woff2,SourceCodePro-Semibold-aa29a496.ttf.woff2".split(",").map(f=>`<link rel="preload" as="font" type="font/woff2"href="../static.files/${f}">`).join(""))</script><link rel="stylesheet" href="../static.files/normalize-9960930a.css"><link rel="stylesheet" href="../static.files/rustdoc-e56847b5.css"><meta name="rustdoc-vars" data-root-path="../" data-static-root-path="../static.files/" data-current-crate="spark_signals" data-themes="" data-resource-suffix="" data-rustdoc-version="1.91.1 (ed61e7d7e 2025-11-07) (Homebrew)" data-channel="1.91.1" data-search-js="search-e256b49e.js" data-stringdex-js="stringdex-c3e638e9.js" data-settings-js="settings-c38705f0.js" ><script src="../static.files/storage-e2aeef58.js"></script><script defer src="../crates.js"></script><script defer src="../static.files/main-6dc2a7f3.js"></script><noscript><link rel="stylesheet" href="../static.files/noscript-263c88ec.css"></noscript><link rel="alternate icon" type="image/png" href="../static.files/favicon-32x32-eab170b8.png"><link rel="icon" type="image/svg+xml" href="../static.files/favicon-044be391.svg"></head><body class="rustdoc mod crate"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]--><rustdoc-topbar><h2><a href="#">Crate spark_signals</a></h2></rustdoc-topbar><nav class="sidebar"><div class="sidebar-crate"><h2><a href="../spark_signals/index.html">spark_<wbr>signals</a><span class="version">0.1.0</span></h2></div><div class="sidebar-elems"><ul class="block"><li><a id="all-types" href="all.html">All Items</a></li></ul><section id="rustdoc-toc"><h3><a href="#">Sections</a></h3><ul class="block top-toc"><li><a href="#spark-signals" title="Spark Signals">Spark Signals</a><ul><li><a href="#quick-start" title="Quick Start">Quick Start</a></li><li><a href="#core-concepts" title="Core Concepts">Core Concepts</a></li><li><a href="#memory-management" title="Memory Management">Memory Management</a></li></ul></li></ul><h3><a href="#structs">Crate Items</a></h3><ul class="block"><li><a href="#structs" title="Structs">Structs</a></li><li><a href="#functions" title="Functions">Functions</a></li></ul></section><div id="rustdoc-modnav"></div></div></nav><div class="sidebar-resizer" title="Drag to resize sidebar"></div><main><div class="width-limiter"><section id="main-content" class="content"><div class="main-heading"><h1>Crate <span>spark_<wbr>signals</span>&nbsp;<button id="copy-path" title="Copy item path to clipboard">Copy item path</button></h1><rustdoc-toolbar></rustdoc-toolbar><span class="sub-heading"><a class="src" href="../src/spark_signals/lib.rs.html#1-653">Source</a> </span></div><details class="toggle top-doc" open><summary class="hideme"><span>Expand description</span></summary><div class="docblock"><h2 id="spark-signals"><a class="doc-anchor" href="#spark-signals">§</a>Spark Signals</h2>
+<p>A fine-grained reactive signals library for Rust.</p>
+<p>This library provides reactive primitives similar to SolidJS, Svelte 5, or Preact Signals,
+but designed for Rust applications like TUI frameworks, game engines, and simulations.</p>
+<h3 id="quick-start"><a class="doc-anchor" href="#quick-start">§</a>Quick Start</h3>
+<div class="example-wrap"><pre class="rust rust-example-rendered"><code><span class="kw">use </span>spark_signals::{signal, derived, effect};
+
+<span class="comment">// Create a signal (reactive value)
+</span><span class="kw">let </span>count = signal(<span class="number">0</span>);
+
+<span class="comment">// Create a derived value (computed from signals)
+</span><span class="kw">let </span>count_clone = count.clone();
+<span class="kw">let </span>doubled = derived(<span class="kw">move </span>|| count_clone.get() * <span class="number">2</span>);
+
+<span class="comment">// Create an effect (runs when dependencies change)
+</span><span class="kw">let </span>doubled_clone = doubled.clone();
+<span class="kw">let </span>_effect = effect(<span class="kw">move </span>|| {
+    <span class="macro">println!</span>(<span class="string">"Doubled: {}"</span>, doubled_clone.get());
+});
+
+<span class="comment">// Changing the signal triggers the effect
+</span>count.set(<span class="number">5</span>); <span class="comment">// Prints: "Doubled: 10"</span></code></pre></div><h3 id="core-concepts"><a class="doc-anchor" href="#core-concepts">§</a>Core Concepts</h3>
+<ul>
+<li><strong>Signal</strong>: A reactive container for a value. Reading inside a reaction creates a subscription.</li>
+<li><strong>Derived</strong>: A computed value that recomputes when its dependencies change.</li>
+<li><strong>Effect</strong>: A side effect that re-runs when its dependencies change.</li>
+</ul>
+<h3 id="memory-management"><a class="doc-anchor" href="#memory-management">§</a>Memory Management</h3>
+<p>Effects are automatically cleaned up when dropped. You don’t need to manually dispose them.</p>
+
+<div class="example-wrap"><pre class="rust rust-example-rendered"><code><span class="kw">use </span>spark_signals::{signal, effect};
+
+<span class="kw">let </span>count = signal(<span class="number">0</span>);
+
+{
+    <span class="kw">let </span>count_clone = count.clone();
+    <span class="kw">let </span>_effect = effect(<span class="kw">move </span>|| {
+        <span class="macro">println!</span>(<span class="string">"Count: {}"</span>, count_clone.get());
+    });
+    count.set(<span class="number">1</span>); <span class="comment">// Effect runs
+</span>} <span class="comment">// _effect dropped here - automatic cleanup
+
+</span>count.set(<span class="number">2</span>); <span class="comment">// Effect does NOT run - it's been cleaned up</span></code></pre></div></div></details><h2 id="structs" class="section-header">Structs<a href="#structs" class="anchor">§</a></h2><dl class="item-table"><dt><a class="struct" href="struct.Derived.html" title="struct spark_signals::Derived">Derived</a></dt><dd>A computed reactive value that derives from other signals.</dd><dt><a class="struct" href="struct.Effect.html" title="struct spark_signals::Effect">Effect</a></dt><dd>A reactive side effect that re-runs when its dependencies change.</dd><dt><a class="struct" href="struct.Signal.html" title="struct spark_signals::Signal">Signal</a></dt><dd>A reactive value container.</dd></dl><h2 id="functions" class="section-header">Functions<a href="#functions" class="anchor">§</a></h2><dl class="item-table"><dt><a class="fn" href="fn.batch.html" title="fn spark_signals::batch">batch</a></dt><dd>Group multiple signal updates - reactions only run once at the end</dd><dt><a class="fn" href="fn.derived.html" title="fn spark_signals::derived">derived</a></dt><dd>Creates a new derived value with the given computation function.</dd><dt><a class="fn" href="fn.effect.html" title="fn spark_signals::effect">effect</a></dt><dd>Creates a new effect that runs the given function.</dd><dt><a class="fn" href="fn.peek.html" title="fn spark_signals::peek">peek</a></dt><dd>Alias for untrack - read without subscribing</dd><dt><a class="fn" href="fn.signal.html" title="fn spark_signals::signal">signal</a></dt><dd>Creates a new signal with the given initial value.</dd><dt><a class="fn" href="fn.untrack.html" title="fn spark_signals::untrack">untrack</a></dt><dd>Run a function without tracking dependencies.
+Signals read inside will not cause the current reaction to re-run.</dd></dl></section></div></main></body></html>
