@@ -185,17 +185,105 @@ Deferred to future release.
 
 ## Traceability
 
-(Updated during roadmap creation)
-
 | Requirement | Phase | Status |
 |-------------|-------|--------|
-| ... | ... | Pending |
+| CNST-01 | Phase 1 | Pending |
+| CNST-02 | Phase 1 | Pending |
+| CNST-03 | Phase 1 | Pending |
+| CNST-04 | Phase 1 | Pending |
+| RUST-05 | Phase 1 | Pending |
+| PRIM-01 | Phase 2 | Pending |
+| PRIM-02 | Phase 2 | Pending |
+| PRIM-06 | Phase 2 | Pending |
+| LOWL-01 | Phase 2 | Pending |
+| LOWL-02 | Phase 2 | Pending |
+| RUST-06 | Phase 2 | Pending |
+| RUST-07 | Phase 2 | Pending |
+| RUST-08 | Phase 2 | Pending |
+| LOWL-03 | Phase 3 | Pending |
+| LOWL-04 | Phase 3 | Pending |
+| LOWL-05 | Phase 3 | Pending |
+| LOWL-06 | Phase 3 | Pending |
+| LOWL-07 | Phase 3 | Pending |
+| LOWL-08 | Phase 3 | Pending |
+| DERV-01 | Phase 4 | Pending |
+| DERV-02 | Phase 4 | Pending |
+| DERV-03 | Phase 4 | Pending |
+| DERV-04 | Phase 4 | Pending |
+| DERV-05 | Phase 4 | Pending |
+| EFCT-01 | Phase 5 | Pending |
+| EFCT-02 | Phase 5 | Pending |
+| EFCT-03 | Phase 5 | Pending |
+| EFCT-04 | Phase 5 | Pending |
+| EFCT-05 | Phase 5 | Pending |
+| EFCT-06 | Phase 5 | Pending |
+| EFCT-07 | Phase 5 | Pending |
+| EFCT-08 | Phase 5 | Pending |
+| EFCT-09 | Phase 5 | Pending |
+| RUST-01 | Phase 5 | Pending |
+| RUST-04 | Phase 5 | Pending |
+| UTIL-01 | Phase 6 | Pending |
+| UTIL-02 | Phase 6 | Pending |
+| UTIL-03 | Phase 6 | Pending |
+| UTIL-04 | Phase 6 | Pending |
+| UTIL-05 | Phase 6 | Pending |
+| BIND-01 | Phase 7 | Pending |
+| BIND-02 | Phase 7 | Pending |
+| BIND-03 | Phase 7 | Pending |
+| BIND-04 | Phase 7 | Pending |
+| BIND-05 | Phase 7 | Pending |
+| BIND-06 | Phase 7 | Pending |
+| LINK-01 | Phase 7 | Pending |
+| LINK-02 | Phase 7 | Pending |
+| LINK-03 | Phase 7 | Pending |
+| SCOP-01 | Phase 8 | Pending |
+| SCOP-02 | Phase 8 | Pending |
+| SCOP-03 | Phase 8 | Pending |
+| SCOP-04 | Phase 8 | Pending |
+| SLOT-01 | Phase 8 | Pending |
+| SLOT-02 | Phase 8 | Pending |
+| SLOT-03 | Phase 8 | Pending |
+| SLOT-04 | Phase 8 | Pending |
+| DEEP-01 | Phase 9 | Pending |
+| DEEP-02 | Phase 9 | Pending |
+| DEEP-03 | Phase 9 | Pending |
+| DEEP-04 | Phase 9 | Pending |
+| DEEP-05 | Phase 9 | Pending |
+| PRIM-04 | Phase 9 | Pending |
+| PRIM-05 | Phase 9 | Pending |
+| COLL-01 | Phase 10 | Pending |
+| COLL-02 | Phase 10 | Pending |
+| COLL-03 | Phase 10 | Pending |
+| COLL-04 | Phase 10 | Pending |
+| SELC-01 | Phase 11 | Pending |
+| SELC-02 | Phase 11 | Pending |
+| TSLOT-01 | Phase 11 | Pending |
+| TSLOT-02 | Phase 11 | Pending |
+| TSLOT-03 | Phase 11 | Pending |
+| TSLOT-04 | Phase 11 | Pending |
+| PROP-01 | Phase 11 | Pending |
+| PROP-02 | Phase 11 | Pending |
+| PRIM-03 | Phase 11 | Pending |
+| PRIM-07 | Phase 11 | Pending |
+| API-01 | Phase 12 | Pending |
+| API-02 | Phase 12 | Pending |
+| API-03 | Phase 12 | Pending |
+| RUST-02 | Phase 12 | Pending |
+| RUST-03 | Phase 12 | Pending |
+| EQLS-01 | Phase 12 | Pending |
+| EQLS-02 | Phase 12 | Pending |
+| EQLS-03 | Phase 12 | Pending |
+| EQLS-04 | Phase 12 | Pending |
+| EQLS-05 | Phase 12 | Pending |
+| EQLS-06 | Phase 12 | Pending |
+| EQLS-07 | Phase 12 | Pending |
+| EQLS-08 | Phase 12 | Pending |
 
 **Coverage:**
-- v1 requirements: 73 total
-- Mapped to phases: 0 (pending roadmap)
-- Unmapped: 73
+- v1 requirements: 91 total
+- Mapped to phases: 91
+- Unmapped: 0
 
 ---
 *Requirements defined: 2026-01-23*
-*Last updated: 2026-01-23 after initial definition*
+*Last updated: 2026-01-23 after roadmap creation*
