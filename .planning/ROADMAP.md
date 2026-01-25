@@ -10,16 +10,16 @@ Port the TypeScript @rlabs-inc/signals library to Rust, solving three hard probl
 - Integer phases (1, 2, 3...): Planned milestone work
 - Decimal phases (2.1, 2.2): Urgent insertions (marked with INSERTED)
 
-- [ ] **Phase 1: Core Foundation** - Flags, types, context (proves type erasure infrastructure)
-- [ ] **Phase 2: Basic Reactivity** - Signal + get/set (proves type erasure end-to-end)
-- [ ] **Phase 3: Dependency Tracking** - markReactions, graph traversal (proves borrow scoping)
-- [ ] **Phase 4: Derived** - MAYBE_DIRTY optimization (proves circular dep injection)
-- [ ] **Phase 5: Effects & Scheduling** - Complete reactive loop
-- [ ] **Phase 6: Batching & Utilities** - batch(), untrack(), flushSync()
-- [ ] **Phase 7: Bindings & Linked Signals** - Two-way bindings, external sync
-- [ ] **Phase 8: Scopes & Slots** - Effect scopes, storage primitives
-- [ ] **Phase 9: Deep Reactivity** - Proxy, nested objects, arrays
-- [ ] **Phase 10: Collections** - ReactiveMap, ReactiveSet, ReactiveVec
+- [x] **Phase 1: Core Foundation** - Flags, types, context (proves type erasure infrastructure)
+- [x] **Phase 2: Basic Reactivity** - Signal + get/set (proves type erasure end-to-end)
+- [x] **Phase 3: Dependency Tracking** - markReactions, graph traversal (proves borrow scoping)
+- [x] **Phase 4: Derived** - MAYBE_DIRTY optimization (proves dual-trait pattern)
+- [x] **Phase 5: Effects & Scheduling** - Complete reactive loop
+- [x] **Phase 6: Batching & Utilities** - batch(), untrack(), flushSync()
+- [x] **Phase 7: Bindings & Linked Signals** - Two-way bindings, external sync
+- [x] **Phase 8: Scopes & Slots** - Effect scopes, storage primitives
+- [x] **Phase 9: Reactive Collections** - ReactiveMap, ReactiveSet, ReactiveVec
+- [ ] **Phase 10: Deep Reactivity** - Proxy, nested objects, arrays (optional)
 - [ ] **Phase 11: Advanced Primitives** - Selectors, tracked slots, reactive props
 - [ ] **Phase 12: API Polish** - Two API surfaces, Rust ergonomics, final integration
 
@@ -37,9 +37,9 @@ Port the TypeScript @rlabs-inc/signals library to Rust, solving three hard probl
 **Plans**: TBD
 
 Plans:
-- [ ] 01-01: Core constants and flags
-- [ ] 01-02: Type-erased traits (AnySource, AnyReaction)
-- [ ] 01-03: Thread-local context
+- [x] 01-01: Core constants and flags
+- [x] 01-02: Type-erased traits (AnySource, AnyReaction)
+- [x] 01-03: Thread-local context
 
 ### Phase 2: Basic Reactivity
 **Goal**: Working signal primitive with read/write and type-erased storage
@@ -53,9 +53,9 @@ Plans:
 **Plans**: TBD
 
 Plans:
-- [ ] 02-01: SourceInner<T> implementing AnySource
-- [ ] 02-02: Signal<T> public API (get, set, try_get, with, update)
-- [ ] 02-03: Basic get/set in tracking module
+- [x] 02-01: SourceInner<T> implementing AnySource (done in Phase 1)
+- [x] 02-02: Signal<T> public API (get, set, try_get, with, update)
+- [x] 02-03: signal() function and source() low-level API
 
 ### Phase 3: Dependency Tracking
 **Goal**: Reactive graph with dependency registration and dirty propagation
@@ -70,9 +70,9 @@ Plans:
 **Plans**: TBD
 
 Plans:
-- [ ] 03-01: Dependency registration in get()
-- [ ] 03-02: markReactions with proper borrow scoping
-- [ ] 03-03: Graph cleanup utilities
+- [x] 03-01: Dependency registration in get()
+- [x] 03-02: markReactions with proper borrow scoping
+- [x] 03-03: Graph cleanup utilities
 
 ### Phase 4: Derived
 **Goal**: Lazy computed signals with MAYBE_DIRTY optimization
@@ -87,10 +87,10 @@ Plans:
 **Plans**: TBD
 
 Plans:
-- [ ] 04-01: DerivedInner implementing both AnySource and AnyReaction
-- [ ] 04-02: Derived<T> public API
-- [ ] 04-03: MAYBE_DIRTY propagation and version checking
-- [ ] 04-04: Dependency injection setup for updateDerived
+- [x] 04-01: DerivedInner implementing both AnySource and AnyReaction
+- [x] 04-02: Derived<T> public API
+- [x] 04-03: MAYBE_DIRTY propagation and version checking
+- [x] 04-04: Dependency injection via as_derived_reaction() method
 
 ### Phase 5: Effects & Scheduling
 **Goal**: Side effects with automatic dependency tracking and scheduling
@@ -106,11 +106,11 @@ Plans:
 **Plans**: TBD
 
 Plans:
-- [ ] 05-01: EffectInner implementing AnyReaction
-- [ ] 05-02: Effect scheduling queue and flush
-- [ ] 05-03: Effect public API (effect, effect.sync, effect.root, effect.tracking)
-- [ ] 05-04: Cleanup function support
-- [ ] 05-05: RAII disposal
+- [x] 05-01: EffectInner implementing AnyReaction
+- [x] 05-02: Effect scheduling queue and flush
+- [x] 05-03: Effect public API (effect, effect.sync, effect.root, effect.tracking)
+- [x] 05-04: Cleanup function support
+- [x] 05-05: RAII disposal
 
 ### Phase 6: Batching & Utilities
 **Goal**: Batch updates, untrack reads, synchronous flush
@@ -125,9 +125,9 @@ Plans:
 **Plans**: TBD
 
 Plans:
-- [ ] 06-01: Batch depth tracking and deferred flush
-- [ ] 06-02: Untrack flag and peek helper
-- [ ] 06-03: flushSync and tick
+- [x] 06-01: Batch depth tracking and deferred flush
+- [x] 06-02: Untrack flag and peek helper
+- [x] 06-03: flushSync and tick
 
 ### Phase 7: Bindings & Linked Signals
 **Goal**: Two-way bindings and externally-synced signals
@@ -142,9 +142,9 @@ Plans:
 **Plans**: TBD
 
 Plans:
-- [ ] 07-01: Binding types and bind/bindReadonly
-- [ ] 07-02: Binding utilities (isBinding, unwrap, signals, disconnect)
-- [ ] 07-03: LinkedSignal implementation
+- [x] 07-01: Binding types and bind/bindReadonly
+- [x] 07-02: Binding utilities (isBinding, unwrap, signals, disconnect)
+- [x] 07-03: LinkedSignal implementation
 
 ### Phase 8: Scopes & Slots
 **Goal**: Effect lifecycle grouping and typed storage primitives
@@ -160,9 +160,9 @@ Plans:
 **Plans**: TBD
 
 Plans:
-- [ ] 08-01: EffectScope implementation
-- [ ] 08-02: Scope utilities (getCurrentScope, onScopeDispose)
-- [ ] 08-03: Slot and SlotArray primitives
+- [x] 08-01: EffectScope implementation
+- [x] 08-02: Scope utilities (getCurrentScope, onScopeDispose)
+- [x] 08-03: Slot and SlotArray primitives
 
 ### Phase 9: Deep Reactivity
 **Goal**: Recursive reactive proxies for nested objects and arrays
@@ -247,16 +247,16 @@ Phases execute in numeric order: 1 -> 2 -> 3 -> 4 -> 5 -> 6 -> 7 -> 8 -> 9 -> 10
 
 | Phase | Plans Complete | Status | Completed |
 |-------|----------------|--------|-----------|
-| 1. Core Foundation | 0/3 | Not started | - |
-| 2. Basic Reactivity | 0/3 | Not started | - |
-| 3. Dependency Tracking | 0/3 | Not started | - |
-| 4. Derived | 0/4 | Not started | - |
-| 5. Effects & Scheduling | 0/5 | Not started | - |
-| 6. Batching & Utilities | 0/3 | Not started | - |
-| 7. Bindings & Linked Signals | 0/3 | Not started | - |
-| 8. Scopes & Slots | 0/3 | Not started | - |
-| 9. Deep Reactivity | 0/4 | Not started | - |
-| 10. Collections | 0/4 | Not started | - |
+| 1. Core Foundation | 3/3 | ✓ Complete | 2026-01-24 |
+| 2. Basic Reactivity | 3/3 | ✓ Complete | 2026-01-24 |
+| 3. Dependency Tracking | 3/3 | ✓ Complete | 2026-01-24 |
+| 4. Derived | 4/4 | ✓ Complete | 2026-01-24 |
+| 5. Effects & Scheduling | 5/5 | ✓ Complete | 2026-01-24 |
+| 6. Batching & Utilities | 3/3 | ✓ Complete | 2026-01-24 |
+| 7. Bindings & Linked Signals | 3/3 | ✓ Complete | 2026-01-24 |
+| 8. Scopes & Slots | 3/3 | ✓ Complete | 2026-01-24 |
+| 9. Reactive Collections | 3/3 | ✓ Complete | 2026-01-24 |
+| 10. Deep Reactivity | 0/4 | Optional | - |
 | 11. Advanced Primitives | 0/4 | Not started | - |
 | 12. API Polish | 0/5 | Not started | - |
 
