@@ -6,7 +6,7 @@
 [![Documentation](https://docs.rs/spark-signals/badge.svg)](https://docs.rs/spark-signals)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
 
-**Spark Signals** is a port of the high-performance [alien-signals](https://github.com/stackblitz/alien-signals) library to Rust. It solves the "hard problems" of Rust reactivity—type erasure, circular dependencies, and borrow checking—while providing an API that feels like writing TypeScript.
+**Spark Signals** is a high-performance Rust port of the [@rlabs-inc/signals](https://github.com/RLabs-Inc/signals) TypeScript library. It solves the "hard problems" of Rust reactivity—type erasure, circular dependencies, and borrow checking—while providing an API that feels like writing TypeScript.
 
 ## Features
 
