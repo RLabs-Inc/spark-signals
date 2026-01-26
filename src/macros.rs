@@ -62,7 +62,7 @@ macro_rules! derived {
 ///
 /// ```rust
 /// use spark_signals::{effect, signal};
-/// let log = signal(vec![]);
+/// let log = signal(vec![1, 2, 3]);
 ///
 /// effect!(log => {
 ///     println!("Log changed: {:?}", log.get());

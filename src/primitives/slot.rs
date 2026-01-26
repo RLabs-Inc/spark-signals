@@ -17,6 +17,7 @@ use std::rc::Rc;
 use crate::core::constants::*;
 use crate::core::types::{AnySource, SourceInner};
 use crate::primitives::signal::Signal;
+use crate::primitives::props::PropValue;
 use crate::reactivity::tracking::{mark_reactions, notify_write, track_read};
 
 // =============================================================================
@@ -291,6 +292,18 @@ impl<T: Clone + PartialEq + 'static> Slot<T> {
         self.inner.set_getter(Box::new(getter));
     }
 
+    /// Bind a PropValue to the slot.
+    ///
+    /// This is the primary way to connect component props to FlexNode slots.
+    /// It automatically handles static values, signals, and getters.
+    pub fn bind(&self, prop: PropValue<T>) {
+        match prop {
+            PropValue::Static(v) => self.set_value(v),
+            PropValue::Signal(s) => self.set_signal(&s),
+            PropValue::Getter(g) => self.set_getter(move || g()),
+        }
+    }
+
     /// Write a value to the slot's source.
     ///
     /// - If pointing to a static value: updates the static value
@@ -502,6 +515,12 @@ impl<T: Clone + PartialEq + 'static> SlotArray<T> {
     pub fn has(&self, index: usize) -> bool {
         index < self.len()
     }
+
+    /// Bind a PropValue to the slot at the given index.
+    pub fn bind(&self, index: usize, prop: PropValue<T>) {
+        self.ensure_capacity(index + 1);
+        self.slots.borrow()[index].bind(prop);
+    }
 }
 
 impl<T: Clone + PartialEq + Debug + 'static> Debug for SlotArray<T> {
@@ -660,6 +679,12 @@ impl<T: Clone + PartialEq + 'static> TrackedSlotArray<T> {
     /// Check if a slot exists at the given index
     pub fn has(&self, index: usize) -> bool {
         self.inner.has(index)
+    }
+
+    /// Bind a PropValue to the slot at the given index (marks index as dirty).
+    pub fn bind(&self, index: usize, prop: PropValue<T>) {
+        self.inner.bind(index, prop);
+        self.dirty.borrow_mut().insert(index);
     }
 
     /// Get the dirty set for manual inspection/clearing
