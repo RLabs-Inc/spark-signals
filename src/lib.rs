@@ -46,8 +46,8 @@ pub use primitives::signal::{
     SourceOptions,
 };
 pub use primitives::slot::{
-    dirty_set, is_slot, slot, slot_array, slot_with_value, tracked_slot_array, DirtySet, IsSlot,
-    Slot, SlotArray, SlotWriteError, TrackedSlotArray,
+    dirty_set, is_slot, slot, slot_array, slot_with_value, tracked_slot, tracked_slot_array,
+    DirtySet, IsSlot, Slot, SlotArray, SlotWriteError, TrackedSlot, TrackedSlotArray,
 };
 
 // Re-export reactivity functions

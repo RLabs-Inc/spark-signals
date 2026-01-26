@@ -403,6 +403,115 @@ pub fn slot_with_value<T: Clone + PartialEq + 'static>(value: T) -> Slot<T> {
 }
 
 // =============================================================================
+// TRACKED SLOT
+// =============================================================================
+
+/// A Slot that automatically reports changes to a dirty set.
+///
+/// This is useful for optimizing expensive computations (like layout) where
+/// you only want to process items that have actually changed.
+///
+/// # Example
+///
+/// ```
+/// use spark_signals::{tracked_slot, dirty_set, slot};
+///
+/// let dirty = dirty_set();
+/// let width = tracked_slot(Some(10), dirty.clone(), 0);
+///
+/// width.set_value(20);
+/// assert!(dirty.borrow().contains(&0));
+/// ```
+pub struct TrackedSlot<T: Clone + PartialEq + 'static> {
+    inner: Slot<T>,
+    dirty: DirtySet,
+    id: usize,
+}
+
+impl<T: Clone + PartialEq + 'static> TrackedSlot<T> {
+    /// Read the current value with dependency tracking.
+    pub fn get(&self) -> Option<T> {
+        self.inner.get()
+    }
+
+    /// Read without tracking (peek).
+    pub fn peek(&self) -> Option<T> {
+        self.inner.peek()
+    }
+
+    /// Set a static value (marks id as dirty).
+    pub fn set_value(&self, value: T) {
+        self.inner.set_value(value);
+        self.dirty.borrow_mut().insert(self.id);
+    }
+
+    /// Point to a signal (marks id as dirty).
+    pub fn set_signal(&self, signal: &Signal<T>) {
+        self.inner.set_signal(signal);
+        self.dirty.borrow_mut().insert(self.id);
+    }
+
+    /// Point to a getter (marks id as dirty).
+    pub fn set_getter<F: Fn() -> T + 'static>(&self, getter: F) {
+        self.inner.set_getter(getter);
+        self.dirty.borrow_mut().insert(self.id);
+    }
+
+    /// Bind a PropValue (marks id as dirty).
+    pub fn bind(&self, prop: PropValue<T>) {
+        self.inner.bind(prop);
+        self.dirty.borrow_mut().insert(self.id);
+    }
+
+    /// Write a value (marks id as dirty).
+    pub fn set(&self, value: T) -> Result<(), SlotWriteError> {
+        let result = self.inner.set(value);
+        if result.is_ok() {
+            self.dirty.borrow_mut().insert(self.id);
+        }
+        result
+    }
+
+    /// Clear the slot (marks id as dirty).
+    pub fn clear(&self) {
+        self.inner.clear();
+        self.dirty.borrow_mut().insert(self.id);
+    }
+}
+
+impl<T: Clone + PartialEq + 'static> Clone for TrackedSlot<T> {
+    fn clone(&self) -> Self {
+        Self {
+            inner: self.inner.clone(),
+            dirty: self.dirty.clone(),
+            id: self.id,
+        }
+    }
+}
+
+impl<T: Clone + PartialEq + Debug + 'static> Debug for TrackedSlot<T> {
+    fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
+        f.debug_struct("TrackedSlot")
+            .field("id", &self.id)
+            .field("value", &self.peek())
+            .finish()
+    }
+}
+
+/// Create a tracked slot.
+pub fn tracked_slot<T: Clone + PartialEq + 'static>(
+    initial: Option<T>,
+    dirty: DirtySet,
+    id: usize,
+) -> TrackedSlot<T> {
+    TrackedSlot {
+        inner: slot(initial),
+        dirty,
+        id,
+    }
+}
+
+// =============================================================================
 // SLOT ARRAY
 // =============================================================================
 
@@ -953,6 +1062,30 @@ mod tests {
 
         s.set_value(5);
         assert_eq!(doubled.get(), 10);
+    }
+
+    #[test]
+    fn tracked_slot_basic() {
+        let dirty = dirty_set();
+        let ts = tracked_slot(Some(10), dirty.clone(), 5);
+
+        assert_eq!(ts.get(), Some(10));
+        assert!(dirty.borrow().is_empty());
+
+        ts.set_value(20);
+        assert!(dirty.borrow().contains(&5));
+        assert_eq!(ts.get(), Some(20));
+    }
+
+    #[test]
+    fn tracked_slot_bind() {
+        use crate::primitives::props::PropValue;
+        let dirty = dirty_set();
+        let ts = tracked_slot::<i32>(None, dirty.clone(), 1);
+
+        ts.bind(PropValue::Static(42));
+        assert!(dirty.borrow().contains(&1));
+        assert_eq!(ts.get(), Some(42));
     }
 
     // =========================================================================

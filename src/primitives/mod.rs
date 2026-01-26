@@ -32,4 +32,7 @@ pub use scope::{
     ScopeCleanupFn,
 };
 pub use signal::{signal, signal_with_equals, source, Signal, SourceOptions};
-pub use slot::{is_slot, slot, slot_array, slot_with_value, IsSlot, Slot, SlotArray, SlotWriteError};
+pub use slot::{
+    is_slot, slot, slot_array, slot_with_value, tracked_slot, IsSlot, Slot, SlotArray,
+    SlotWriteError, TrackedSlot,
+};
