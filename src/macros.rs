@@ -79,3 +79,29 @@ macro_rules! effect {
         $crate::effect(move || $body)
     };
 }
+
+/// Create a prop getter with automatic variable capturing.
+///
+/// Wraps `PropValue::Getter(Box::new(cloned!(... => move || ...)))`.
+///
+/// # Usage
+///
+/// ```rust
+/// use spark_signals::{prop, signal, PropValue};
+/// let first = signal("Sherlock");
+/// let last = signal("Holmes");
+///
+/// // Create a getter prop that depends on signals
+/// let full_name = prop!(first, last => format!("{} {}", first.get(), last.get()));
+/// ```
+#[macro_export]
+macro_rules! prop {
+    // Case 1: With dependencies
+    ($($deps:ident),+ => $body:expr) => {
+        $crate::PropValue::Getter(Box::new($crate::cloned!($($deps),+ => move || $body)))
+    };
+    // Case 2: No dependencies (just expression)
+    ($body:expr) => {
+        $crate::PropValue::Getter(Box::new(move || $body))
+    };
+}
