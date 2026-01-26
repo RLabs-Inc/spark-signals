@@ -8,6 +8,8 @@
 
 pub mod collections;
 pub mod core;
+#[macro_use]
+pub mod macros;
 pub mod primitives;
 pub mod reactivity;
 
