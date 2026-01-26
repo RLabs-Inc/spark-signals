@@ -15,11 +15,6 @@
 /// let a = signal(1);
 /// let b = signal(2);
 ///
-/// // Instead of:
-/// // let a_clone = a.clone();
-/// // let b_clone = b.clone();
-/// // derived(move || a_clone.get() + b_clone.get());
-///
 /// // Use:
 /// let sum = derived(cloned!(a, b => move || a.get() + b.get()));
 /// ```
@@ -33,6 +28,54 @@ macro_rules! cloned {
     };
 }
 
-// Note: We don't define derived! or effect! macros yet as they would likely
-// conflict with the function names or require distinct naming (e.g., derived_fn!).
-// The cloned! macro provides 90% of the ergonomic benefit with 0% of the confusion.
+/// Create a derived signal with automatic variable capturing.
+///
+/// Wraps `derived(cloned!(... => move || ...))`.
+///
+/// # Usage
+///
+/// ```rust
+/// use spark_signals::{derived, signal};
+/// let a = signal(1);
+/// let b = signal(2);
+///
+/// // Clean syntax: list deps => expression
+/// let sum = derived!(a, b => a.get() + b.get());
+/// ```
+#[macro_export]
+macro_rules! derived {
+    // Case 1: With dependencies
+    ($($deps:ident),+ => $body:expr) => {
+        $crate::derived($crate::cloned!($($deps),+ => move || $body))
+    };
+    // Case 2: No dependencies (just expression)
+    ($body:expr) => {
+        $crate::derived(move || $body)
+    };
+}
+
+/// Create an effect with automatic variable capturing.
+///
+/// Wraps `effect(cloned!(... => move || ...))`.
+///
+/// # Usage
+///
+/// ```rust
+/// use spark_signals::{effect, signal};
+/// let log = signal(vec![]);
+///
+/// effect!(log => {
+///     println!("Log changed: {:?}", log.get());
+/// });
+/// ```
+#[macro_export]
+macro_rules! effect {
+    // Case 1: With dependencies
+    ($($deps:ident),+ => $body:expr) => {
+        $crate::effect($crate::cloned!($($deps),+ => move || $body))
+    };
+    // Case 2: No dependencies
+    ($body:expr) => {
+        $crate::effect(move || $body)
+    };
+}
