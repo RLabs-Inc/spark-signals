@@ -12,6 +12,7 @@ pub mod core;
 pub mod macros;
 pub mod primitives;
 pub mod reactivity;
+pub mod shared;
 
 // Re-export core items at crate root for ergonomic access
 pub use core::constants;
@@ -64,6 +65,13 @@ pub use reactivity::tracking::{
 
 // Re-export collections
 pub use collections::{ReactiveMap, ReactiveSet, ReactiveVec};
+
+// Re-export shared memory primitives (for FFI bridges)
+pub use shared::{
+    wait_for_wake, wait_for_wake_timeout, MutableSharedArray, MutableSharedF32Array,
+    ReactiveSharedArray, ReactiveSharedF32Array, ReactiveSharedI32Array, ReactiveSharedU32Array,
+    ReactiveSharedU8Array, SharedBufferContext,
+};
 
 // =============================================================================
 // TESTS
