@@ -8,6 +8,7 @@ pub mod derived;
 pub mod effect;
 pub mod linked;
 pub mod props;
+pub mod repeater;
 pub mod scope;
 pub mod selector;
 pub mod signal;

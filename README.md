@@ -20,7 +20,7 @@
 
 ```toml
 [dependencies]
-spark-signals = "0.1.2"
+spark-signals = "0.3.0"
 ```
 
 ## The "Pure Magic" Syntax
@@ -118,6 +118,66 @@ let width = tracked_slot(Some(10), dirty.clone(), 0);
 width.set_value(20);
 
 assert!(dirty.borrow().contains(&0)); // We know ID 0 changed!
+```
+
+## Shared Memory
+
+Cross-language reactive shared memory primitives for connecting independent reactive graphs (e.g., Rust and TypeScript) through shared memory with zero serialization.
+
+### SharedSlotBuffer
+
+Reactive typed arrays backed by external shared memory. `get()` tracks dependencies via `track_read()`, `set()` writes + marks reactions dirty + notifies the other side.
+
+```rust
+use spark_signals::shared::{SharedSlotBuffer, NoopNotifier};
+
+// Create a buffer over external shared memory
+let mut data = vec![0.0f32; 4096];
+let buffer = unsafe {
+    SharedSlotBuffer::new(
+        data.as_mut_ptr(),
+        data.len(),
+        0.0,
+        NoopNotifier,
+    )
+};
+
+// Reactive read — tracks dependency
+let w = buffer.get(0);
+
+// Write — updates memory + marks reactions dirty + notifies
+buffer.set(0, 150.0);
+
+// Non-reactive read
+let raw = buffer.peek(0);
+
+// Notify reactive graph from external wake (e.g., TS side wrote)
+buffer.notify_changed();
+```
+
+### Repeater
+
+A new reactive graph primitive that runs **inline during `mark_reactions`**. Zero scheduling overhead. Connects any reactive source to a SharedSlotBuffer position.
+
+```rust
+use spark_signals::primitives::repeater::repeat;
+
+// Bind signal → buffer position
+// When width changes, the repeater forwards inline during mark_reactions
+let _repeater = repeat(&width_signal, &width_buffer, 0);
+
+// width.set(200) → buffer[0] = 200 during the same mark_reactions pass
+```
+
+### Notifier
+
+Pluggable cross-side notification via the `Notifier` trait.
+
+```rust
+use spark_signals::shared::notify::{AtomicsNotifier, NoopNotifier, Notifier};
+
+// AtomicsNotifier — atomic store + platform wake (futex on Linux, ulock on macOS)
+// NoopNotifier — silent, for testing
 ```
 
 ## Architecture

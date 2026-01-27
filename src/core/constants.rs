@@ -76,6 +76,9 @@ pub const EFFECT_PRESERVED: u32 = 1 << 17;
 /// Effect is an inspect effect (for debugging)
 pub const INSPECT_EFFECT: u32 = 1 << 18;
 
+/// Reaction is a repeater (inline write-through forwarding node)
+pub const REPEATER: u32 = 1 << 19;
+
 // =============================================================================
 // STATUS MASK (for clearing status bits)
 // =============================================================================
@@ -114,6 +117,7 @@ mod tests {
             EFFECT_RAN,
             EFFECT_PRESERVED,
             INSPECT_EFFECT,
+            REPEATER,
         ];
 
         for (i, &a) in all_flags.iter().enumerate() {

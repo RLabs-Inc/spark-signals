@@ -12,6 +12,9 @@
 // - Full integration with reactive tracking
 // ============================================================================
 
+pub mod notify;
+pub mod shared_slot_buffer;
+
 use std::marker::PhantomData;
 use std::sync::atomic::{AtomicI32, AtomicU32, Ordering};
 

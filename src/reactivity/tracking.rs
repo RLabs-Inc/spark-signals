@@ -160,6 +160,15 @@ pub fn mark_reactions(source: Rc<dyn AnySource>, status: u32) {
                 if let Some(derived_as_source) = reaction.as_derived_source() {
                     stack.push((derived_as_source, MAYBE_DIRTY));
                 }
+            } else if (flags & REPEATER) != 0 {
+                // Inline write-through for repeaters — runs during mark_reactions, not scheduled
+                if not_dirty {
+                    // Downcast to RepeaterInner and call forward()
+                    if let Some(repeater) = reaction.as_any().downcast_ref::<crate::primitives::repeater::RepeaterInner>() {
+                        repeater.forward();
+                    }
+                    set_signal_status(&*reaction, CLEAN);
+                }
             } else if not_dirty && (flags & EFFECT) != 0 {
                 // For effects that just became dirty, schedule them for execution
                 effects_to_schedule.push(reaction);

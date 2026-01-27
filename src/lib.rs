@@ -66,12 +66,19 @@ pub use reactivity::tracking::{
 // Re-export collections
 pub use collections::{ReactiveMap, ReactiveSet, ReactiveVec};
 
+// Re-export repeater
+pub use primitives::repeater::{repeat, RepeaterInner};
+
 // Re-export shared memory primitives (for FFI bridges)
 pub use shared::{
     wait_for_wake, wait_for_wake_timeout, MutableSharedArray, MutableSharedF32Array,
     ReactiveSharedArray, ReactiveSharedF32Array, ReactiveSharedI32Array, ReactiveSharedU32Array,
     ReactiveSharedU8Array, SharedBufferContext,
 };
+
+// Re-export new shared primitives (Layer 1 + Notifier)
+pub use shared::notify::{platform_wake, AtomicsNotifier, Notifier, NoopNotifier};
+pub use shared::shared_slot_buffer::SharedSlotBuffer;
 
 // =============================================================================
 // TESTS
